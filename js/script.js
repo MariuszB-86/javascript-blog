@@ -44,7 +44,8 @@
   const optArticleSelector = '.post',
     optTitleSelector = '.post-title',
     optTitleListSelector = '.titles',
-    optArticleTagsSelector = '.post-tags .list';
+    optArticleTagsSelector = '.post-tags .list',
+    optArticleAuthorSelector = '.post-author';
 
   const generateTitleLinks = function(customSelector = ''){
     //console.log('To jest funkcja generateTitleLinks');
@@ -88,7 +89,7 @@
 
   function generateTags(){
     /* find all articles */
-    const articleTags = document.querySelectorAll('.post');
+    const articleTags = document.querySelectorAll(optArticleSelector);
     //console.log(articleTags);
   
     /* START LOOP: for every article: */
@@ -108,7 +109,9 @@
       const tagsArray = tagsList.split(' ');
       //console.log(tagsArray);
 
+      /* make html variable with empty string */
       let html = '';
+
       /* START LOOP: for each tag */
       for(let tag of tagsArray){
         /* generate HTML of the link */
@@ -144,13 +147,13 @@
   
     /* find all tag links with class active */
     const tagActiveLinks = document.querySelectorAll('a.active[href^="#tag-"]');
-    console.log(tagActiveLinks);
+    //console.log(tagActiveLinks);
   
     /* START LOOP: for each active tag link */
     for(let tagActiveLink of tagActiveLinks){
       /* remove class active */
       tagActiveLink.classList.remove('active');
-      console.log(tagActiveLink);
+      //console.log(tagActiveLink);
 
       /* END LOOP: for each active tag link */
     }
@@ -183,5 +186,54 @@
   }
   
   addClickListenersToTags();
-}
 
+  function generateAuthors(){
+    /* find all articles */
+    const articles = document.querySelectorAll(optArticleSelector);
+    //console.log(articles);
+  
+    /* START LOOP: for every article: */
+    for(article of articles){
+      /* find author wrapper */
+      const authorWrap = article.querySelector(optArticleAuthorSelector);
+      //console.log(authorWrap);
+
+      /* make html variable with empty string */
+      let html = '';
+
+      /* get author from data-author attribute */
+      const articleAuthor = article.getAttribute('data-author');
+      console.log(articleAuthor);
+
+      /* generate HTML of the link */
+      const linkHTML = '<a href="#author-' + articleAuthor + '">' + articleAuthor + '</a>';
+      console.log(linkHTML);
+
+      /* add generated code to html variable */
+      html = linkHTML;
+
+      /* insert HTML of all the links into the author wrapper */
+      authorWrap.innerHTML = html;
+      
+      /* END LOOP: for every article: */
+    }
+      
+      
+      
+
+
+      
+  
+        
+  
+        
+  
+      
+  
+      
+  
+    
+  }
+  
+  generateAuthors();
+}
