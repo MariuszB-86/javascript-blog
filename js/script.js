@@ -45,7 +45,8 @@
     optTitleSelector = '.post-title',
     optTitleListSelector = '.titles',
     optArticleTagsSelector = '.post-tags .list',
-    optArticleAuthorSelector = '.post-author';
+    optArticleAuthorSelector = '.post-author',
+    optTagsListSelector = '.tags.list';
 
   const generateTitleLinks = function(customSelector = ''){
     //console.log('To jest funkcja generateTitleLinks');
@@ -88,6 +89,9 @@
   generateTitleLinks(); 
 
   const generateTags = function(){
+    /* [NEW] create a new variable allTags with an empty array */
+    let allTags = [];
+
     /* find all articles */
     const articleTags = document.querySelectorAll(optArticleSelector);
     //console.log(articleTags);
@@ -99,10 +103,10 @@
       //console.log(tagsWrapper);
 
       /* make html variable with empty string */
-      let tagsList = '';
+      //let tagsList = '';
 
       /* get tags from data-tags attribute */
-      tagsList = articleTag.getAttribute('data-tags');
+      const tagsList = articleTag.getAttribute('data-tags');
       //console.log(tagsList);
 
       /* split tags into array */
@@ -117,8 +121,16 @@
         /* generate HTML of the link */
         const linkHTML = '<li><a href="#tag-' + tag + '">' + tag + '</a></li> ';
         //console.log(linkHTML);
+
         /* add generated code to html variable */
         html = html + linkHTML;
+
+         /* [NEW] check if this link is NOT already in allTags */
+         if(allTags.indexOf(linkHTML) == -1){
+          /* [NEW] add generated code to allTags array */
+          allTags.push(linkHTML);
+         }
+
         /* END LOOP: for each tag */
       }
       //console.log(html);
@@ -127,6 +139,11 @@
   
     /* END LOOP: for every article: */
     }
+    /* [NEW] find list of tags in right column */
+    const tagList = document.querySelector(optTagsListSelector);
+
+    /* [NEW] add html from allTags to tagList */
+    tagList.innerHTML = allTags.join(' ');
   };
   
   generateTags();
@@ -175,8 +192,8 @@
   
   const addClickListenersToTags = function(){
     /* find all links to tags */
-    const links = document.querySelectorAll('.list-horizontal a');
-    console.log(links);
+    const links = document.querySelectorAll('.list-horizontal a, .tags a');
+    //console.log(links);
   
     /* START LOOP: for each link */
     for(let link of links){
